@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    // Start is called before the first frame update
+
+    private Animator animator;
+    private Rigidbody rb;
+    private int runSpeed = 10;
+
     void Start() {
-        
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        animator.Play("runStart");
     }
 
-    // Update is called once per frame
     void Update() {
-      
+      rb.velocity = Vector3.forward * runSpeed;
     }
 }
