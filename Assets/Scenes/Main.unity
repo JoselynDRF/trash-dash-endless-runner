@@ -417,3 +417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055c752d2733f13438a265081286222a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runSpeed: 10
+  laneChangeSpeed: 10
+  jumpLength: 7.5
+  jumpHeight: 2
+  jumpSpeed: 5

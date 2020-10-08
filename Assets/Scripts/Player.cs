@@ -4,11 +4,16 @@ public class Player : MonoBehaviour {
 
     public float runSpeed = 10f;
     public float laneChangeSpeed = 10f;
+    public float jumpLength = 7.5f;
+    public float jumpHeight = 1f;
+    public float jumpSpeed = 5f;
 
     private Animator animator;
     private Rigidbody rb;
     private Vector3 targetPosition;
     private int currentLane = 0;
+    private float jumpStart;
+    private bool isJumping = false;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -17,14 +22,32 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
-      MoveCharacter();
+        MoveCharacter();
+    }
+
+    void FixedUpdate() {
+        rb.velocity = Vector3.forward * runSpeed;
     }
 
     void MoveCharacter() {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeLane(-1);
         else if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeLane(1);
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
 
-        Vector3 newPosition = new Vector3(targetPosition.x, transform.position.y, transform.position.z);
+        if (isJumping) {
+            float ratio = (transform.position.z - jumpStart) / jumpLength;
+
+            if (ratio >= 1) {
+                isJumping = false;
+                animator.SetBool("Jumping", false);
+            } else {
+                targetPosition.y = Mathf.Sin(ratio * Mathf.PI) * jumpHeight;
+            }
+        } else {
+            targetPosition.y = Mathf.MoveTowards(targetPosition.y, 0, jumpSpeed * Time.deltaTime);
+        }
+
+        Vector3 newPosition = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
         transform.localPosition = Vector3.MoveTowards(transform.position, newPosition, laneChangeSpeed * Time.deltaTime);
     }
 
@@ -37,7 +60,12 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void FixedUpdate() {
-        rb.velocity = Vector3.forward * runSpeed;
+    void Jump() {
+        if (!isJumping) {
+            isJumping = true;
+            jumpStart = transform.position.z;
+            animator.SetBool("Jumping", true);
+            animator.SetFloat("JumpSpeed", runSpeed / jumpLength);
+        }
     }
 }
