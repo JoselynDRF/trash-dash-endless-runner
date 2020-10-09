@@ -7,16 +7,23 @@ public class Player : MonoBehaviour {
     public float jumpLength = 7.5f;
     public float jumpHeight = 1f;
     public float jumpSpeed = 5f;
+    public float slideLength = 10f;
 
     private Animator animator;
     private Rigidbody rb;
+    private BoxCollider boxCollider;
     private Vector3 targetPosition;
+    private Vector3 boxColliderSize;
     private float jumpStart;
     private bool isJumping = false;
+    private float slideStart;
+    private bool isSliding = false;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider>();
+        boxColliderSize = boxCollider.size;
         animator.Play("runStart");
     }
 
@@ -29,14 +36,19 @@ public class Player : MonoBehaviour {
     }
 
     void MoveCharacter() {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeLane(-1);
-        else if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeLane(1);
-        else if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
-
+        HandleKeyboard();
         HandleJump();
+        HandleSlide();
 
         Vector3 newPosition = new Vector3(targetPosition.x, targetPosition.y, transform.position.z);
         transform.localPosition = Vector3.MoveTowards(transform.position, newPosition, laneChangeSpeed * Time.deltaTime);
+    }
+
+    void HandleKeyboard() {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) ChangeLane(-1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) ChangeLane(1);
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) Jump();
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) Slide(); 
     }
 
     void ChangeLane(int direction) {
@@ -57,7 +69,7 @@ public class Player : MonoBehaviour {
     }
 
     void HandleJump() {
-        if (isJumping) {
+        if (isJumping && !isSliding) {
             float ratio = (transform.position.z - jumpStart) / jumpLength;
 
             if (ratio >= 1) {
@@ -69,5 +81,27 @@ public class Player : MonoBehaviour {
         } else {
             targetPosition.y = Mathf.MoveTowards(targetPosition.y, 0, jumpSpeed * Time.deltaTime);
         }
+    }
+
+    void Slide() {
+        if (!isJumping && !isSliding) {
+            isSliding = true;
+            slideStart = transform.position.z;
+            boxCollider.size /= 2;
+            animator.SetBool("Sliding", true);
+            animator.SetFloat("JumpSpeed", runSpeed / jumpLength);
+        }
+    }
+
+    void HandleSlide() {
+        if (isSliding) {
+            float ratio = (transform.position.z - slideStart) / slideLength;
+
+            if (ratio >= 1) {
+                isSliding = false;
+                boxCollider.size = boxColliderSize;
+                animator.SetBool("Sliding", false);
+            }
+        } 
     }
 }
