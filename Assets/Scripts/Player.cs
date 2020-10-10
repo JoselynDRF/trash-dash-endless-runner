@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public GameObject model;
     public float runSpeed = 10f;
     public float laneChangeSpeed = 10f;
     public float jumpSpeed = 5f;
     public float jumpLength = 7.5f;
     public float slideLength = 10f;
     public float jumpHeight = 1f;
+    public float invisibleTime = 5f;
 
     private Animator animator;
     private Rigidbody rb;
@@ -18,6 +21,7 @@ public class Player : MonoBehaviour {
     private bool isSwiping = false;
     private bool isJumping = false;
     private bool isSliding = false;
+    private bool isInvisible = false;
     private float jumpStart;
     private float slideStart;
 
@@ -148,5 +152,35 @@ public class Player : MonoBehaviour {
                 animator.SetBool("Sliding", false);
             }
         } 
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (!isInvisible && other.CompareTag("Obstacle")) {
+            animator.SetTrigger("Hit");
+            StartCoroutine(Blinking());
+        }
+    }
+
+    IEnumerator Blinking() {
+        float timer = 0;
+        float currentBlink = 1f;
+        float blinkPeriod = 0.1f;
+        bool enabled = false;
+        isInvisible = true;
+        yield return new WaitForSeconds(0.5f);
+
+        while (timer < invisibleTime && isInvisible) {
+            model.SetActive(enabled);
+            yield return null;
+            timer += Time.deltaTime;
+
+            if (blinkPeriod < timer) {
+                currentBlink = 1f - currentBlink;
+                enabled = !enabled;
+            }
+        }
+
+        model.SetActive(true);
+        isInvisible = false;
     }
 }

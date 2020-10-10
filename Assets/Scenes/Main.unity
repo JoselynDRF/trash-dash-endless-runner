@@ -1687,6 +1687,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 877367885}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &889161506 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1855566417224840, guid: 95d2ac30741c7b24bb3362f902133c24,
+    type: 3}
+  m_PrefabInstance: {fileID: 1063702191}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &891403913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2998,12 +3004,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055c752d2733f13438a265081286222a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 889161506}
   runSpeed: 10
   laneChangeSpeed: 10
   jumpSpeed: 5
   jumpLength: 7.5
   slideLength: 10
   jumpHeight: 2
+  invisibleTime: 1
 --- !u!1001 &1852322225
 PrefabInstance:
   m_ObjectHideFlags: 0
