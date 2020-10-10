@@ -43,6 +43,7 @@ public class Track : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
+            other.GetComponent<Player>().IncreaseSpeed();
             transform.position = new Vector3(0, 0, transform.position.z + trackEndPosition * 2);
         }
     }

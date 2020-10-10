@@ -5,6 +5,8 @@ public class Player : MonoBehaviour {
 
     public GameObject model;
     public float runSpeed = 10f;
+    public float minSpeed = 10f;
+    public float maxSpeed = 30f;
     public float laneChangeSpeed = 10f;
     public float jumpSpeed = 5f;
     public float jumpLength = 7.5f;
@@ -168,6 +170,7 @@ public class Player : MonoBehaviour {
         bool enabled = false;
         isInvisible = true;
         yield return new WaitForSeconds(0.5f);
+        runSpeed = minSpeed;
 
         while (timer < invisibleTime && isInvisible) {
             model.SetActive(enabled);
@@ -182,5 +185,10 @@ public class Player : MonoBehaviour {
 
         model.SetActive(true);
         isInvisible = false;
+    }
+
+    public void IncreaseSpeed() {
+        runSpeed *= 1.15f;
+        runSpeed = (runSpeed >= maxSpeed) ? maxSpeed : runSpeed;
     }
 }
