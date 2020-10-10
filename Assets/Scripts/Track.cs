@@ -4,33 +4,52 @@ using UnityEngine;
 public class Track : MonoBehaviour {
 
     public GameObject coin;
+    public GameObject[] obstacles;
     public Vector2 coinsNumber;
+    public Vector2 obstaclesNumber;
 
     private float trackEndPosition = 314f;
 
     void Start() {
         CreateCoins();
+        CreateObstacles();
     }
 
     void CreateCoins() {
         List<GameObject> cointsList = new List<GameObject>();
         int newCoinsNumber = (int) Random.Range(coinsNumber.x, coinsNumber.y);
-        float minPosition = 10f;
 
         for (int i = 0; i < newCoinsNumber; i++) {
-            float maxPosition = minPosition + 8f;
+            float coinPosition = (trackEndPosition / newCoinsNumber) + (trackEndPosition / newCoinsNumber) * i;
+            float minPosition = coinPosition + 15f;
+            float maxPosition = coinPosition + 1;
             float randomPosition = Random.Range(minPosition, maxPosition);
 
             cointsList.Add(Instantiate(coin, transform));
             cointsList[i].transform.localPosition = new Vector3(transform.position.x, transform.position.y, randomPosition);
-            minPosition = randomPosition + 1;
-            PositionLane(cointsList[i]);
+
+            cointsList[i].GetComponent<ChangeLane>().PositionLane();
         }
     }
 
-    void PositionLane(GameObject coint) {
-        int randomLane = Random.Range(-1, 2);
-        coint.transform.position = new Vector3(randomLane, coint.transform.position.y, coint.transform.position.z);
+    void CreateObstacles() {
+        List<GameObject> obstaclesList = new List<GameObject>();
+        int newObstaclesNumber = (int) Random.Range(obstaclesNumber.x, obstaclesNumber.y);
+
+        for (int i = 0; i < newObstaclesNumber; i++) {
+            float obstaclePosition = (trackEndPosition / newObstaclesNumber) + (trackEndPosition / newObstaclesNumber) * i;
+            float minPosition = obstaclePosition + 20f;
+            float maxPosition = obstaclePosition + 1;
+            float randomPosition = Random.Range(minPosition, maxPosition);
+
+            obstaclesList.Add(Instantiate(obstacles[Random.Range(0, obstacles.Length)], transform));
+            obstaclesList[i].transform.localPosition = new Vector3(transform.position.x, transform.position.y, randomPosition);
+            minPosition = randomPosition + 1;
+
+            if (obstaclesList[i].GetComponent<ChangeLane>() != null) {
+                obstaclesList[i].GetComponent<ChangeLane>().PositionLane();
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other) {

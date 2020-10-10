@@ -3108,8 +3108,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coin: {fileID: 1284136041663359368, guid: 978a6fdd71782a94f93bdf4e1fe96cf0, type: 3}
+  obstacles:
+  - {fileID: 1000011638144408, guid: 22facfbe232a90b45b681c638f2e490d, type: 3}
+  - {fileID: 1000011769374998, guid: b19a0bd8ede69fe4683dff84150a047b, type: 3}
+  - {fileID: 1000013842435444, guid: d68ac797bf384f84bbca159dc2a6e4d7, type: 3}
+  - {fileID: 1000010455400752, guid: 82eb370d70e50344cb6eeb919a1429b8, type: 3}
   coinsNumber: {x: 50, y: 80}
-  cointsList: []
+  obstaclesNumber: {x: 10, y: 30}
 --- !u!1 &2086185982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3141,8 +3146,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coin: {fileID: 1284136041663359368, guid: 978a6fdd71782a94f93bdf4e1fe96cf0, type: 3}
+  obstacles:
+  - {fileID: 1000011638144408, guid: 22facfbe232a90b45b681c638f2e490d, type: 3}
+  - {fileID: 1000011769374998, guid: b19a0bd8ede69fe4683dff84150a047b, type: 3}
+  - {fileID: 1000013842435444, guid: d68ac797bf384f84bbca159dc2a6e4d7, type: 3}
+  - {fileID: 1000010455400752, guid: 82eb370d70e50344cb6eeb919a1429b8, type: 3}
   coinsNumber: {x: 50, y: 80}
-  cointsList: []
+  obstaclesNumber: {x: 10, y: 30}
 --- !u!65 &2086185984
 BoxCollider:
   m_ObjectHideFlags: 0
