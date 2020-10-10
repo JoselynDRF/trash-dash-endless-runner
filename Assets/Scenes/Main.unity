@@ -3107,6 +3107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e47fb68fda2f644a5adc6d3048900d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coin: {fileID: 1284136041663359368, guid: 978a6fdd71782a94f93bdf4e1fe96cf0, type: 3}
+  coinsNumber: {x: 50, y: 80}
+  cointsList: []
 --- !u!1 &2086185982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3137,6 +3140,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e47fb68fda2f644a5adc6d3048900d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coin: {fileID: 1284136041663359368, guid: 978a6fdd71782a94f93bdf4e1fe96cf0, type: 3}
+  coinsNumber: {x: 50, y: 80}
+  cointsList: []
 --- !u!65 &2086185984
 BoxCollider:
   m_ObjectHideFlags: 0
