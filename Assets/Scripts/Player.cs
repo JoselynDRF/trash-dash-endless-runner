@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
     private float jumpStart;
     private float slideStart;
     private int currentLives = 3;
+    private int coins;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -159,19 +160,28 @@ public class Player : MonoBehaviour {
         } 
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (!isInvisible && other.CompareTag("Obstacle")) {
-            currentLives--;
-            uiManager.UpdateLives(currentLives);
-            animator.SetTrigger("Hit");
+    void OnTriggerEnter(Collider other) {
+       if (other.CompareTag("Coin")) GetCoins(other);
+       if (!isInvisible && other.CompareTag("Obstacle")) HitObstacles();
+    }
 
-            if (currentLives <= 0) {
-                runSpeed = 0;
-                animator.SetBool("Dead", true);
-                // Call gameover
-            } else {
-                StartCoroutine(Blinking());
-            }
+    void GetCoins(Collider other) {
+        coins++;
+        uiManager.UpdateCoins(coins);
+        other.gameObject.SetActive(false);
+    }
+
+    void HitObstacles() {
+        currentLives--;
+        uiManager.UpdateLives(currentLives);
+        animator.SetTrigger("Hit");
+
+        if (currentLives <= 0) {
+            runSpeed = 0;
+            animator.SetBool("Dead", true);
+            // Call gameover
+        } else {
+            StartCoroutine(Blinking());
         }
     }
 
