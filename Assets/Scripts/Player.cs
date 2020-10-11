@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
     private float slideStart;
     private int currentLives = 3;
     private int coins;
+    private float score;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
@@ -40,11 +41,17 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
+        HandleScore();
         MoveCharacter();
     }
 
     void FixedUpdate() {
         rb.velocity = Vector3.forward * runSpeed;
+    }
+
+    void HandleScore() {
+        score += Time.deltaTime * runSpeed;
+        uiManager.UpdateScore((int) score);
     }
 
     void MoveCharacter() {
