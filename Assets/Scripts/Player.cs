@@ -166,6 +166,7 @@ public class Player : MonoBehaviour {
     IEnumerator Blinking() {
         float timer = 0;
         float currentBlink = 1f;
+        float lastBlink = 0;
         float blinkPeriod = 0.1f;
         bool enabled = false;
         isInvisible = true;
@@ -176,8 +177,10 @@ public class Player : MonoBehaviour {
             model.SetActive(enabled);
             yield return null;
             timer += Time.deltaTime;
+            lastBlink += Time.deltaTime;
 
-            if (blinkPeriod < timer) {
+            if (blinkPeriod < lastBlink) {
+                lastBlink = 0;
                 currentBlink = 1f - currentBlink;
                 enabled = !enabled;
             }
