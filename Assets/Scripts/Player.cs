@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
 
     private Animator animator;
     private Rigidbody rb;
+    private UIManager uiManager;
     private BoxCollider boxCollider;
     private Vector3 targetPosition;
     private Vector3 boxColliderSize;
@@ -26,10 +27,12 @@ public class Player : MonoBehaviour {
     private bool isInvisible = false;
     private float jumpStart;
     private float slideStart;
+    private int currentLives = 3;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        uiManager = FindObjectOfType<UIManager>();
         boxCollider = GetComponent<BoxCollider>();
         boxColliderSize = boxCollider.size;
         animator.Play("runStart");
@@ -158,8 +161,17 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (!isInvisible && other.CompareTag("Obstacle")) {
+            currentLives--;
+            uiManager.UpdateLives(currentLives);
             animator.SetTrigger("Hit");
-            StartCoroutine(Blinking());
+
+            if (currentLives <= 0) {
+                runSpeed = 0;
+                animator.SetBool("Dead", true);
+                // Call gameover
+            } else {
+                StartCoroutine(Blinking());
+            }
         }
     }
 
